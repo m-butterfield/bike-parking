@@ -1,2 +1,3 @@
 from bike_parking import app
-app.run()
+import config
+app.run(debug=config.DEBUG)

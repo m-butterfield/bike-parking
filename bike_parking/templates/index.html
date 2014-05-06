@@ -1,9 +1,18 @@
 {% extends "base.html" %}
 {% block css %}
-
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='vendor/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css"
+          href="{{ url_for('static', filename='css/bike_parking.css') }}" />
 {% endblock %}
 {% block javascript %}
-
+    {% if config.DEBUG %}
+    <script data-main="{{ url_for('static', filename='js/main') }}"
+            src="{{url_for('static', filename='vendor/require.js') }}"></script>
+    {% else %}
+    <script data-main="{{ url_for('static', filename='js/main-build.js') }}"
+            src="{{url_for('static', filename='vendor/require.js') }}"></script>
+    {% endif %}
 {% endblock %}
 {% block content %}
     <div class="container text-center">
