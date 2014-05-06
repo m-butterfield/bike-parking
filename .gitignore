@@ -1,0 +1,6 @@
+*.swp
+bower_components
+.idea
+local_config.py
+*.pyc
+
