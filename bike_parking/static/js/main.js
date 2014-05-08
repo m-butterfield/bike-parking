@@ -1,6 +1,7 @@
 require.config({
     baseUrl: '/static/js',
     paths: {
+        "async": '../vendor/async',
         "backbone": '../vendor/backbone',
         "bootstrap": '../vendor/bootstrap',
         "domReady": '../vendor/domReady',

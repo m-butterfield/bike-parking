@@ -5,5 +5,4 @@ define([
     var mainMapView = new MainMapView({
         el: $("#main-map")
     });
-    mainMapView.render();
 });

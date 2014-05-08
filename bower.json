@@ -2,6 +2,7 @@
     "name": "Bike-Parking",
     "version": "0.0.0",
     "dependencies": {
+        "requirejs-plugins": "~1.0.2",
         "backbone": "~1.1.2",
         "bootstrap": "~3.1.1",
         "jquery": "~1.10.2",
