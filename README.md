@@ -9,3 +9,11 @@ Install Python dependencies.  I recommend using [virtualenv](https://github.com/
     $ pip install -r requirements.txt
 
 Then point a browser to: [http://localhost:5000](http://localhost:5000) And you are ready to go!
+
+**Deployment**
+In config.py, set DEBUG = False  
+Then, build the javascript:
+
+    $ cd bike_parking/static/js
+    $ node ../../../bower_components/r.js/dist/r.js -o build.js 
+
