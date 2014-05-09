@@ -7,7 +7,8 @@
         "domReady": '../vendor/domReady',
         "jquery": '../vendor/jquery',
         "text": '../vendor/text',
-        "underscore": '../vendor/underscore'
+        "underscore": '../vendor/underscore',
+        "async": '../vendor/async'
     },
     "shim": {
         "bootstrap": ["jquery"]
