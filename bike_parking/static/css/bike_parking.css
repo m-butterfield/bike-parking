@@ -1,3 +1,14 @@
 #main-map {
+    margin-bottom: 50px;
     height: 600px;
+}
+
+#search-form {
+    margin: 20px;
+}
+
+#starting-address {
+    margin: 0 auto;
+    width: 400px;
+    text-align: center;
 }

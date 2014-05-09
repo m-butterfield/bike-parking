@@ -20,7 +20,8 @@ require([
     'domReady',
     'jquery',
     'underscore',
-    'bootstrap'
+    'bootstrap',
+    'async!https://maps.googleapis.com/maps/api/js?key=AIzaSyAHu3tscS1tG243nstn6jiAS9L2kD1OwtQ&libraries=places&sensor=false'
 ], function(Backbone, domReady, $, _) {
     domReady(function() {
         require(['app']);
