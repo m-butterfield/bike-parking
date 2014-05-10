@@ -12,7 +12,7 @@ define([
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 streetViewControl: false
             });
-
+            BikeParking.mapVent = new Backbone.Map({map: BikeParking.map});
             // Try W3C Geolocation
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
