@@ -72,7 +72,7 @@ define([
             var bounds = new google.maps.LatLngBounds();
             bounds.extend(startingPoint);
             BikeParking.map.fitBounds(bounds);
-            BikeParking.map.setZoom(17);
+            BikeParking.map.setZoom(18);
         },
 
         fetchParkingResults: function() {

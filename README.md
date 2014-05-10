@@ -18,6 +18,10 @@ Gather external static resources using [bower](http://bower.io/):
 
     $ bower install
 
+Fetch data and create the sqlite database:
+
+    $ python create_database.py
+
 Start the application:
 
     $ python runserver.py

@@ -80,7 +80,7 @@ define([
         console.log("Geolocation service failed.");
         BikeParking.map.setCenter(initialLocation);
     }
-    BikeParking.map.setZoom(17);
+    BikeParking.map.setZoom(18);
     var bikeLayer = new google.maps.BicyclingLayer();
     bikeLayer.setMap(map);
     BikeParking.mapVent = new Backbone.Map({map: BikeParking.map});

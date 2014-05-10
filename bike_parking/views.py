@@ -1,4 +1,4 @@
-from bike_parking import app, db
+from bike_parking import app
 from flask import render_template, request, jsonify
 from models import ParkingSpot
 
@@ -8,6 +8,9 @@ def index():
 
 @app.route('/nearby_parking')
 def nearby_parking():
+    """
+    Returns the parking spots found within the given bounding box
+    """
     northeast_lat = request.args.get('northeastLat', 0, type=float)
     northeast_lng = request.args.get('northeastLng', 0, type=float)
     southwest_lat = request.args.get('southwestLat', 0, type=float)
@@ -27,4 +30,3 @@ def nearby_parking():
         })
 
     return jsonify({'spots': spots_list})
-
