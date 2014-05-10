@@ -63,6 +63,24 @@ define([
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false
     });
+    google.maps.visualRefresh = true;
+    // San Francisco Coordinates :)
+    var initialLocation = new google.maps.LatLng(37.7758356916692, -122.4182527108874);
+
+    // Try W3C Geolocation
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            initialLocation = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+            BikeParking.map.setCenter(initialLocation);
+            }, function() {
+                BikeParking.map.setCenter(initialLocation);
+            }
+        );
+     } else {
+        console.log("Geolocation service failed.");
+        BikeParking.map.setCenter(initialLocation);
+    }
+    BikeParking.map.setZoom(17);
     var bikeLayer = new google.maps.BicyclingLayer();
     bikeLayer.setMap(map);
     BikeParking.mapVent = new Backbone.Map({map: BikeParking.map});

@@ -39,7 +39,7 @@ define([
                 anchor: new google.maps.Point(35, 70),
                 scaledSize: new google.maps.Size(70, 70)
             };
-            this.parkingResults = new ParkingResults();
+            this.parkingResults = BikeParking.results = new ParkingResults();
         },
 
         updateSearchBounds: _.throttle(function() {
@@ -77,7 +77,7 @@ define([
 
         fetchParkingResults: _.throttle(function() {
             var bounds = BikeParking.map.getBounds();
-            var query = "?$limit=200&$where=within_box(coordinates, " +
+            var query = "?$limit=1000&$where=within_box(coordinates, " +
                 bounds.getNorthEast().lat() + "," +
                 bounds.getSouthWest().lng() + "," +
                 bounds.getSouthWest().lat() + "," +
@@ -88,7 +88,7 @@ define([
                 url: BikeParking.API_ENDPOINT + query
             }).done(function(results) {
                 // if none were found, remove all from the map and collection
-                if (!results) {
+                if (!results.length) {
                     that.parkingResults.each(function(parkingResult) {
                         parkingResult.marker.setMap(null);
                     });
@@ -96,13 +96,12 @@ define([
                     return;
                 }
                 // otherwise, just remove any markers not on the map anymore
-                var parkingResultsCopy = new Backbone.Collection(that.parkingResults.toJSON());
-                parkingResultsCopy.each(function(parkingResult) {
+                var parkingResultsModels = that.parkingResults.models.slice();
+                parkingResultsModels.forEach(function(parkingResult) {
                     var exists = false;
                     for (var i = 0; i < results.length; i++) {
-                        if (result[i].coordinates.latitude === parkingResult.latitude &&
-                            result[i].coordinates.longitude === parkingResult.longitude &&
-                            result[i].location_name === parkingResult.name) {
+                        if (results[i].coordinates.latitude === parkingResult.latitude &&
+                            results[i].coordinates.longitude === parkingResult.longitude) {
                             exists = true;
                             break;
                         }
@@ -116,9 +115,8 @@ define([
                 for (var i = 0; i < results.length; i++) {
                     var exists = false;
                     for (var j = 0; j < that.parkingResults.models.length; j++) {
-                        if (result[i].coordinates.latitude === that.parkingResults.models[j].latitude &&
-                            result[i].coordinates.longitude === that.parkingResults.models[j].longitude &&
-                            result[i].location_name === that.parkingResults.models[j].name) {
+                        if (results[i].coordinates.latitude === that.parkingResults.models[j].latitude &&
+                            results[i].coordinates.longitude === that.parkingResults.models[j].longitude) {
                             exists = true;
                             break;
                         }
@@ -139,10 +137,11 @@ define([
                             name: results[i].location_name,
                             marker: marker
                         });
+                        that.parkingResults.add(parkingResult);
                     }
                 }
             });
-        }, 1000)
+        }, 5000)
 
     });
 
