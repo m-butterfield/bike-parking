@@ -77,16 +77,18 @@ define([
 
         fetchParkingResults: function() {
             var bounds = BikeParking.map.getBounds();
-            var query = "?$limit=1000&$where=within_box(coordinates, " +
-                bounds.getNorthEast().lat() + "," +
-                bounds.getSouthWest().lng() + "," +
-                bounds.getSouthWest().lat() + "," +
-                bounds.getNorthEast().lng() + ")" +
-                "AND status='COMPLETE' AND status_detail='INSTALLED'";
+            var data = {
+                northeastLat: bounds.getNorthEast().lat(),
+                northeastLng: bounds.getNorthEast().lng(),
+                southwestLat: bounds.getSouthWest().lat(),
+                southwestLng: bounds.getSouthWest().lng()
+            }
             var that = this;
             $.ajax({
-                url: BikeParking.API_ENDPOINT + query
+                url: '/nearby_parking',
+                data: data
             }).done(function(results) {
+                results = results.spots;
                 // if none were found, remove all from the map and collection
                 if (!results.length) {
                     that.parkingResults.each(function(parkingResult) {
@@ -100,8 +102,8 @@ define([
                 parkingResultsModels.forEach(function(parkingResult) {
                     var exists = false;
                     for (var i = 0; i < results.length; i++) {
-                        if (results[i].coordinates.latitude === parkingResult.latitude &&
-                            results[i].coordinates.longitude === parkingResult.longitude) {
+                        if (results[i].lat === parkingResult.latitude &&
+                            results[i].lng === parkingResult.longitude) {
                             exists = true;
                             break;
                         }
@@ -115,26 +117,26 @@ define([
                 for (var i = 0; i < results.length; i++) {
                     var exists = false;
                     for (var j = 0; j < that.parkingResults.models.length; j++) {
-                        if (results[i].coordinates.latitude === that.parkingResults.models[j].latitude &&
-                            results[i].coordinates.longitude === that.parkingResults.models[j].longitude) {
+                        if (results[i].lat === that.parkingResults.models[j].latitude &&
+                            results[i].lng === that.parkingResults.models[j].longitude) {
                             exists = true;
                             break;
                         }
                     }
                     if (!exists) {
-                        var location = new google.maps.LatLng(results[i].coordinates.latitude,
-                            results[i].coordinates.longitude);
+                        var location = new google.maps.LatLng(results[i].lat,
+                            results[i].lng);
                         var marker = new google.maps.Marker({
                             map: BikeParking.map,
                             icon: that.parkingIcon,
-                            title: results[i].location_name,
+                            title: results[i].name,
                             position: location
                         });
                         var parkingResult = new ParkingResult({
-                            latitude: results[i].coordinates.latitude,
-                            longitude: results[i].coordinates.longitude,
+                            latitude: results[i].lat,
+                            longitude: results[i].lng,
                             location: location,
-                            name: results[i].location_name,
+                            name: results[i].name,
                             marker: marker
                         });
                         that.parkingResults.add(parkingResult);
