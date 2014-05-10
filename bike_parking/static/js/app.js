@@ -63,6 +63,8 @@ define([
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         streetViewControl: false
     });
+    var bikeLayer = new google.maps.BicyclingLayer();
+    bikeLayer.setMap(map);
     BikeParking.mapVent = new Backbone.Map({map: BikeParking.map});
 
     var SearchBox = function(options) {

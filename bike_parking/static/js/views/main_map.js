@@ -20,9 +20,6 @@ define([
                 console.log("Geolocation service failed.");
                 BikeParking.map.setCenter(initialLocation);
             }
-            var bikeLayer = new google.maps.BicyclingLayer();
-            bikeLayer.setMap(BikeParking.map);
-
         }
 
     });
