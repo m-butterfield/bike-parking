@@ -42,9 +42,9 @@ define([
             this.parkingResults = BikeParking.results = new ParkingResults();
         },
 
-        updateSearchBounds: _.throttle(function() {
+        updateSearchBounds: function() {
             BikeParking.searchBox.setBounds(BikeParking.map.getBounds());
-        }, 500),
+        },
 
         handleSubmit: function(event) {
             event.preventDefault();
@@ -75,7 +75,7 @@ define([
             BikeParking.map.setZoom(17);
         },
 
-        fetchParkingResults: _.throttle(function() {
+        fetchParkingResults: function() {
             var bounds = BikeParking.map.getBounds();
             var query = "?$limit=1000&$where=within_box(coordinates, " +
                 bounds.getNorthEast().lat() + "," +
@@ -141,7 +141,7 @@ define([
                     }
                 }
             });
-        }, 5000)
+        }
 
     });
 
