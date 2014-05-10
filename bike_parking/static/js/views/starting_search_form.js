@@ -1,5 +1,5 @@
 define([
-    'backbone',
+    'backbone'
 ], function(Backbone) {
     var StartingSearchForm = Backbone.View.extend({
         events: {
@@ -7,14 +7,20 @@ define([
         },
 
         initialize: function() {
-            this.searchBox = new google.maps.places.SearchBox($("#starting-address", this.el)[0]);
-            this.on('places_changed', this.updateStartPoint);
+            this.listenTo(BikeParking.boxVent, 'box:places_changed', this.updateStartPoint);
             this.listenTo(BikeParking.mapVent, 'map:bounds_changed', this.updateSearchBounds);
+            this.startIcon = {
+                url: '/static/img/blue-bike.gif',
+                size: new google.maps.Size(70, 70),
+                origin: new google.maps.Point(0, 0),
+                anchor: new google.maps.Point(35, 70),
+                scaledSize: new google.maps.Size(70, 70)
+            };
+            this.startMarker = undefined;
         },
 
         updateSearchBounds: _.throttle(function() {
-            console.log('changing bounds');
-            this.searchBox.setBounds(BikeParking.map.getBounds());
+            BikeParking.searchBox.setBounds(BikeParking.map.getBounds());
         }, 500),
 
         handleSubmit: function(event) {
@@ -23,18 +29,23 @@ define([
         },
 
         updateStartPoint: function() {
-            if (!this.searchBox.getPlaces()) {
-                return false;
+            // use the results of the autocomplete dropdown if there are any, otherwise use the center of the map
+            var startingPoint = undefined;
+            if (!BikeParking.searchBox.getPlaces()) {
+                var center = BikeParking.map.getCenter();
+                startingPoint = new google.maps.LatLng(center.lat(), center.lng());
+            } else {
+                var searchResult = BikeParking.searchBox.getPlaces()[0];
+                startingPoint = searchResult.geometry.location;
             }
-            var searchResult = this.searchBox.getPlaces()[0],
-                startingPoint = {
-                    lat: undefined,
-                    lng: undefined
-                };
-            var center = BikeParking.map.getCenter();
-            startingPoint.lat = center.lat();
-            startingPoint.lng = center.lng();
-            console.log(startingPoint.lat + " " + startingPoint.lng);
+            this.startMarker && this.startMarker.setMap(null);
+            this.startMarker = new google.maps.Marker({
+                map: BikeParking.map,
+                icon: this.startIcon,
+                title: "Start Point",
+                position: startingPoint
+            });
+
         }
 
     });
