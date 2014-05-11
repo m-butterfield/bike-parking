@@ -2,15 +2,7 @@ define([
     'backbone'
 ], function(Backbone) {
 
-    var ParkingResult = Backbone.Model.extend({
-        initialize: function(options) {
-            this.latitude = options.latitude;
-            this.longitude = options.longitude;
-            this.location = options.location;
-            this.name = options.name;
-            this.marker = options.marker;
-        }
-    });
+    var ParkingResult = Backbone.Model.extend();
 
     var ParkingResults = Backbone.Collection.extend({
         model: ParkingResult
@@ -67,7 +59,8 @@ define([
     Backbone.Map = Map;
 
     var MainMapView = Backbone.View.extend({
-        initialize: function() {
+        initialize: function(options) {
+            this.endingLocation = options.endingLocation;
             var map = BikeParking.map = new google.maps.Map(this.el, {
                 zoom: 14,
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -102,7 +95,7 @@ define([
                 size: new google.maps.Size(70, 70),
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(35, 70),
-                scaledSize: new google.maps.Size(70, 70)
+                scaledSize: new google.maps.Size(40, 40)
             };
 
             this.parkingResults = BikeParking.results = new ParkingResults();
@@ -126,7 +119,7 @@ define([
                 // if none were found, remove all from the map and collection
                 if (!results.length) {
                     that.parkingResults.each(function(parkingResult) {
-                        parkingResult.marker.setMap(null);
+                        parkingResult.get('marker').setMap(null);
                     });
                     that.parkingResults.reset();
                     return;
@@ -136,14 +129,14 @@ define([
                 parkingResultsModels.forEach(function(parkingResult) {
                     var exists = false;
                     for (var i = 0; i < results.length; i++) {
-                        if (results[i].lat === parkingResult.latitude &&
-                            results[i].lng === parkingResult.longitude) {
+                        if (results[i].lat === parkingResult.get('latitude') &&
+                            results[i].lng === parkingResult.get('longitude')) {
                             exists = true;
                             break;
                         }
                     }
                     if (!exists) {
-                        parkingResult.marker.setMap(null);
+                        parkingResult.get('marker').setMap(null);
                         that.parkingResults.remove(parkingResult);
                     }
                 });
@@ -158,13 +151,18 @@ define([
                         }
                     }
                     if (!exists) {
-                        var location = new google.maps.LatLng(results[i].lat,
-                            results[i].lng);
+                        var location = new google.maps.LatLng(results[i].lat, results[i].lng);
+                        location.name = results[i].name;
                         var marker = new google.maps.Marker({
                             map: BikeParking.map,
                             icon: that.parkingIcon,
                             title: results[i].name,
                             position: location
+                        });
+                        google.maps.event.addListener(marker, 'click', function(marker) {
+                            that.endingLocation.set({
+                                'location': marker.latLng
+                            });
                         });
                         var parkingResult = new ParkingResult({
                             latitude: results[i].lat,

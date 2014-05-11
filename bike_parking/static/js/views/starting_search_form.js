@@ -43,7 +43,8 @@ define([
             'submit': 'handleSubmit'
         },
 
-        initialize: function() {
+        initialize: function(options) {
+            this.startingLocation = options.startingLocation;
             this.listenTo(BikeParking.boxVent, 'box:places_changed', this.updateStartPoint);
             this.listenTo(BikeParking.mapVent, 'map:bounds_changed', this.updateSearchBounds);
             this.startIcon = {
@@ -51,7 +52,7 @@ define([
                 size: new google.maps.Size(70, 70),
                 origin: new google.maps.Point(0, 0),
                 anchor: new google.maps.Point(35, 70),
-                scaledSize: new google.maps.Size(70, 70)
+                scaledSize: new google.maps.Size(40, 40)
             };
         },
 
@@ -66,12 +67,13 @@ define([
 
         updateStartPoint: function() {
             // use the results of the autocomplete dropdown if there are any, otherwise use the center of the map
-            var startingPoint = undefined;
+            var startingPoint = undefined,
+                searchResult = undefined;
             if (!BikeParking.searchBox.getPlaces()) {
                 var center = BikeParking.map.getCenter();
                 startingPoint = new google.maps.LatLng(center.lat(), center.lng());
             } else {
-                var searchResult = BikeParking.searchBox.getPlaces()[0];
+                searchResult = BikeParking.searchBox.getPlaces()[0];
                 startingPoint = searchResult.geometry.location;
             }
             this.startMarker && this.startMarker.setMap(null);
@@ -86,6 +88,10 @@ define([
             bounds.extend(startingPoint);
             BikeParking.map.fitBounds(bounds);
             BikeParking.map.setZoom(18);
+            this.startingLocation.set({
+                searchResult: searchResult,
+                startingPoint: startingPoint
+            });
         }
 
     });
