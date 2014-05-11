@@ -81,7 +81,7 @@ define([
                         map.setCenter(initialLocation);
                     }
                 );
-             } else {
+            } else {
                 console.log("Geolocation service failed.");
                 map.setCenter(initialLocation);
             }
@@ -104,6 +104,9 @@ define([
 
         fetchParkingResults: function() {
             var bounds = BikeParking.map.getBounds();
+            if (!bounds) {
+                return false;
+            }
             var data = {
                 northeastLat: bounds.getNorthEast().lat(),
                 northeastLng: bounds.getNorthEast().lng(),

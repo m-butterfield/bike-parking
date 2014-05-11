@@ -21,8 +21,6 @@ define([
             var startingPoint = this.startingLocation.get('startingPoint'),
                 searchResult = this.startingLocation.get('searchResult');
             if (searchResult) {
-                $("#starting-point", this.el).text("Starting Point: " +
-                    searchResult.name + ", " + searchResult.formatted_address);
                 if (this.endingLocation.get('location')) {
                     this.displayDirections();
                 }
@@ -32,13 +30,13 @@ define([
                 geocoder.geocode({'latLng': startingPoint}, function(results, status) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         if (results[1]) {
-                            $("#starting-point").text("Starting Point: " +
-                                results[1].formatted_address);
+                            $("#starting-address").val(results[1].formatted_address);
                             if (that.endingLocation.get('location')) {
                                 that.displayDirections();
                             }
                         }
                     } else {
+                        $("#starting-address").val("");
                         console.error("Geocoder failed due to: " + status);
                     }
                 });
@@ -47,7 +45,7 @@ define([
 
         updateEndingLocation: function() {
             var location = this.endingLocation.get('location');
-            $("#ending-point", this.el).text("Ending Point: " + location.name);
+            $("#parking-location").text(location.name);
             if (this.startingLocation.get('startingPoint')) {
                 this.displayDirections();
             }
@@ -59,6 +57,7 @@ define([
             if (!start || !end) {
                 alert("You must choose a start and end point");
             }
+            $("#directions-panel").text("");
             var request = {
                 origin: start,
                 destination: end,

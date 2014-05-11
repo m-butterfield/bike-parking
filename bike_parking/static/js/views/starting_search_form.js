@@ -40,7 +40,8 @@ define([
 
     var StartingSearchForm = Backbone.View.extend({
         events: {
-            'submit': 'handleSubmit'
+            'submit': 'handleSubmit',
+            'click #use-location-button': 'useLocation'
         },
 
         initialize: function(options) {
@@ -62,16 +63,30 @@ define([
 
         handleSubmit: function(event) {
             event.preventDefault();
-            this.updateStartPoint();
         },
 
-        updateStartPoint: function() {
+        useLocation: function(event) {
+            event.preventDefault();
+            var that = this;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    that.updateStartPoint(location);
+                    }, function() {
+                        alert("Geolocation is not enabled, turn it on or use the search box instead.");
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported, use the search box instead.");
+            }
+        },
+
+        updateStartPoint: function(location) {
             // use the results of the autocomplete dropdown if there are any, otherwise use the center of the map
             var startingPoint = undefined,
                 searchResult = undefined;
-            if (!BikeParking.searchBox.getPlaces()) {
-                var center = BikeParking.map.getCenter();
-                startingPoint = new google.maps.LatLng(center.lat(), center.lng());
+            if (location instanceof google.maps.LatLng) {
+                startingPoint = location;
             } else {
                 searchResult = BikeParking.searchBox.getPlaces()[0];
                 startingPoint = searchResult.geometry.location;
