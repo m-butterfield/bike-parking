@@ -8,56 +8,6 @@ define([
         model: ParkingResult
     });
 
-    var Map = function(options) {
-        this.getMap = function() {
-            return options.map;
-        };
-
-        for (var prop in this.mapEvents) {
-            var event = this.mapEvents[prop];
-            this.addListener(event);
-        }
-    };
-
-    _.extend(Map.prototype, Backbone.Events, {
-        mapEvents: [
-            "bounds_changed",
-            "center_changed",
-            "click",
-            "dblclick",
-            "drag",
-            "dragend",
-            "dragstart",
-            "heading_changed",
-            "idle",
-            "maptypeid_changed",
-            "mousemove",
-            "mouseout",
-            "mouseover",
-            "projection_changed",
-            "resize",
-            "rightclick",
-            "tilesloaded",
-            "tilt_changed"
-        ],
-
-        addListener: function(event) {
-            var mapObj = this;
-            var referenceMap = this.getMap();
-            google.maps.event.addListener(referenceMap, event, function(e) {
-                var eventName = "map:" + event;
-                mapObj.trigger(eventName, [e]);
-            });
-        },
-
-        triggerEvent: function(event) {
-            var reference_map = this.getMap();
-            google.maps.event.trigger(reference_map, event);
-        }
-    });
-
-    Backbone.Map = Map;
-
     var MainMapView = Backbone.View.extend({
         initialize: function(options) {
             this.endingLocation = options.endingLocation;
@@ -94,7 +44,7 @@ define([
                 url: '/static/img/green-bike.gif',
                 size: new google.maps.Size(70, 70),
                 origin: new google.maps.Point(0, 0),
-                anchor: new google.maps.Point(35, 70),
+                anchor: new google.maps.Point(20, 40),
                 scaledSize: new google.maps.Size(40, 40)
             };
 

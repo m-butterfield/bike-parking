@@ -1,6 +1,6 @@
 Bike Parking
 ======
-A webapp that shows directions to the nearest bike parking in San Francisco.  
+A webapp that shows directions to nearby bike parking in San Francisco.
 
 See it in action here: [bikeparking.mattbutterfield.com](http://bikeparking.mattbutterfield.com)
 

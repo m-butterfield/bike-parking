@@ -2,7 +2,8 @@ define([
     'backbone',
     'views/main_map',
     'views/starting_search_form',
-    'views/directions_view'
+    'views/directions_view',
+    'lib/event_extensions'
 ], function(Backbone, MainMapView, StartingSearchForm, DirectionsView) {
 
     var startingLocation = new Backbone.Model();
