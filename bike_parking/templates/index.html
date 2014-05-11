@@ -14,29 +14,61 @@
     </script>
     {% if config.DEBUG %}
     <script data-main="{{ url_for('static', filename='js/main') }}"
-            src="{{url_for('static', filename='vendor/require.js') }}"></script>
+            src="{{url_for('static', filename='vendor/require.js')}}"></script>
     {% else %}
     <script data-main="{{ url_for('static', filename='js/main-build.js') }}"
-            src="{{url_for('static', filename='vendor/require.js') }}"></script>
+            src="{{url_for('static', filename='vendor/require.js')}}"></script>
     {% endif %}
 {% endblock %}
 {% block content %}
     <div class="container text-center">
-        <h1>San Francisco Bike Parking Map</h1>
-        <div id="starting-search-form">
-            <form class="form-inline" role="form">
-                <div class="form-group">
-                    <input type="text" class="form-control" id="starting-address"
-                           placeholder="Search for a starting location..." >
+        <h1 id="main-heading">San Francisco Bike Parking Map!</h1>
+        <div class="row">
+            <div class="col-xs-5">
+                <div id="icon-help-div">
+                    <span class="icon-help-span">
+                        <img src="{{url_for('static', filename='img/blue-bike.gif')}}" > = Starting Location
+                    </span>
+                    <span class="icon-help-span">
+                        <img src="{{url_for('static', filename='img/green-bike.gif')}}" > = Parking Location
+                    </span>
                 </div>
-                <button type="submit" class="btn btn-success">Update Starting Location</button>
-            </form>
-        </div>
-        <div id="main-map"></div>
-        <div id="directions-view">
-            <p id="starting-point">Starting Point:</p>
-            <p id="ending-point">Ending Point:</p>
-            <div id="directions-panel"></div>
+                <div id="starting-search-form">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-xs-4 control-label" for="starting-address">Starting Location:</label>
+                            <div class="col-xs-8">
+                                <input type="text" class="form-control" id="starting-address" name="starting-address"
+                                       placeholder="Type here to search for a starting location..." >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-8 col-xs-offset-4">
+                                <button type="submit" class="form-control btn btn-primary">
+                                    Use Current Location
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group" id="parking-location-div">
+                            <label class="col-xs-4 control-label">Parking Location:</label>
+                            <div class="col-xs-8">
+                                <span class="form-control" id="parking-location">
+                                    <em>Click a parking location on the map</em>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                <div id="directions-view">
+                    <h3>Directions:</h3>
+                    <div id="directions-panel">
+                        <em>Choose a starting location and a parking location</em>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="col-xs-7">
+                <div id="main-map"></div>
+            </div>
         </div>
     </div>
 {% endblock %}

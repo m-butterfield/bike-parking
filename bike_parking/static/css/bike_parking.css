@@ -4,11 +4,33 @@
 }
 
 #starting-search-form {
-    margin: 20px;
+    margin-top: 20px;
+}
+
+#icon-help-div {
+    margin-top: 20px;
+}
+
+.icon-help-span {
+    margin-left: 30px;
+}
+
+#parking-location-div {
+    margin-top: 30px;
+}
+
+#parking-location {
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    text-align: left;
 }
 
 #starting-address {
-    margin: 0 auto;
-    width: 400px;
     text-align: center;
+}
+
+#main-heading {
+    margin-bottom: 25px;
 }
