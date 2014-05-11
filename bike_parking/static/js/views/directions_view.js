@@ -7,6 +7,7 @@ define([
         initialize: function(options) {
             this.startingLocation = options.startingLocation;
             this.endingLocation = options.endingLocation;
+            this.geocoder = new google.maps.Geocoder();
             this.listenTo(this.startingLocation, "change", this.updateStartingLocation);
             this.listenTo(this.endingLocation, "change", this.updateEndingLocation);
             this.directionsService = new google.maps.DirectionsService();
@@ -26,9 +27,8 @@ define([
                     this.displayDirections();
                 }
             } else {
-                var geocoder = new google.maps.Geocoder();
                 var that = this;
-                geocoder.geocode({'latLng': startingPoint}, function(results, status) {
+                this.geocoder.geocode({'latLng': startingPoint}, function(results, status) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         if (results[1]) {
                             $("#starting-address").val(results[1].formatted_address);
@@ -46,7 +46,22 @@ define([
 
         updateEndingLocation: function() {
             var location = this.endingLocation.get('location');
-            $("#parking-location").text(location.name);
+            var location_name = location.name;
+            if (location_name === "_undetermined") {
+                var that = this;
+                this.geocoder.geocode({'latLng': location}, function(results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        if (results[1]) {
+                            $("#parking-location").text(results[1].formatted_address);
+                        }
+                    } else {
+                        $("#starting-address").text("");
+                        console.error("Geocoder failed due to: " + status);
+                    }
+                });
+            } else {
+                $("#parking-location").text(location_name);
+            }
             if (this.startingLocation.get('startingPoint')) {
                 this.displayDirections();
             }
