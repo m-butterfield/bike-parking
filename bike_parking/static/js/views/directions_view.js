@@ -13,7 +13,8 @@ define([
             this.directionsDisplay = new google.maps.DirectionsRenderer({
                 draggable: true,
                 panel: $("#directions-panel")[0],
-                map: BikeParking.map
+                map: BikeParking.map,
+                suppressMarkers: true
             });
         },
 
@@ -67,6 +68,8 @@ define([
             this.directionsService.route(request, function(response, status) {
                 if (status === google.maps.DirectionsStatus.OK) {
                     that.directionsDisplay.setDirections(response);
+                } else {
+                    alert("No route found... Try again.");
                 }
             });
         }

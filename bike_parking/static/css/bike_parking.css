@@ -27,10 +27,23 @@
     text-align: left;
 }
 
-#starting-address {
-    text-align: center;
-}
-
 #main-heading {
     margin-bottom: 25px;
+}
+
+/* Custom CSS for directions results */
+#directions-panel .adp .adp-warnbox {
+    display: none;
+}
+
+#directions-panel .adp-directions {
+    width: 100%;
+}
+
+#directions-panel .adp-marker {
+    display: none;
+}
+
+#directions-panel .adp-text {
+    height: 35px;
 }
