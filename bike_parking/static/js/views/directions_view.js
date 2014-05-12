@@ -48,7 +48,6 @@ define([
             var location = this.endingLocation.get('location');
             var location_name = location.name;
             if (location_name === "_undetermined") {
-                var that = this;
                 this.geocoder.geocode({'latLng': location}, function(results, status) {
                     if (status === google.maps.GeocoderStatus.OK) {
                         if (results[1]) {

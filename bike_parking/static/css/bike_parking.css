@@ -1,10 +1,22 @@
 #main-map {
-    margin-bottom: 50px;
+    margin-bottom: 15px;
     height: 600px;
 }
 
 #starting-search-form {
     margin-top: 20px;
+}
+
+* {
+    border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    -webkit-border-radius: 0 !important;
+}
+
+#starting-address {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
 }
 
 #icon-help-div {
@@ -27,13 +39,32 @@
     text-align: left;
 }
 
+#main-row {
+    border: 1px solid silver;
+    padding-top: 15px;
+}
+
 #main-heading {
-    margin-bottom: 25px;
+    margin-bottom: 15px;
+}
+
+#directions-view {
+    margin-bottom: 15px;
+    margin-top: 35px;
 }
 
 /* Custom CSS for directions results */
+#directions-panel .adp {
+    font-family: inherit;
+    font-weight: inherit;
+}
+
 #directions-panel .adp .adp-warnbox {
     display: none;
+}
+
+#directions-panel .adp-placemark {
+    background-color: #FFF;
 }
 
 #directions-panel .adp-directions {
