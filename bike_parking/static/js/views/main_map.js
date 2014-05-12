@@ -1,12 +1,8 @@
 define([
-    'backbone'
-], function(Backbone) {
-
-    var ParkingResult = Backbone.Model.extend();
-
-    var ParkingResults = Backbone.Collection.extend({
-        model: ParkingResult
-    });
+    'backbone',
+    'collections/parking_results',
+    'models/parking_result'
+], function(Backbone, ParkingResults, ParkingResult) {
 
     var MainMapView = Backbone.View.extend({
         initialize: function(options) {
@@ -16,7 +12,7 @@ define([
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
                 streetViewControl: false
             });
-            BikeParking.mapVent = new Backbone.Map({map: map});
+            BikeParking.mapEvents = new Backbone.Map({map: map});
             google.maps.visualRefresh = true;
 
             // San Francisco Coordinates :)
@@ -49,7 +45,7 @@ define([
             };
 
             this.parkingResults = BikeParking.results = new ParkingResults();
-            this.listenTo(BikeParking.mapVent, 'map:idle', this.fetchParkingResults);
+            this.listenTo(BikeParking.mapEvents, 'map:idle', this.fetchParkingResults);
         },
 
         fetchParkingResults: function() {

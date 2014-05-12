@@ -13,7 +13,7 @@ define([
             this.searchBox = new google.maps.places.SearchBox($("#starting-address")[0]);
             this.boxEvents = new Backbone.SearchBox({searchBox: this.searchBox});
             this.listenTo(this.boxEvents, 'box:places_changed', this.updateStartPoint);
-            this.listenTo(BikeParking.mapVent, 'map:bounds_changed', this.updateSearchBounds);
+            this.listenTo(BikeParking.mapEvents, 'map:bounds_changed', this.updateSearchBounds);
             this.startIcon = {
                 url: '/static/img/blue-bike.gif',
                 size: new google.maps.Size(70, 70),
@@ -47,7 +47,6 @@ define([
         },
 
         updateStartPoint: function(location) {
-            // use the results of the autocomplete dropdown if there are any, otherwise use the center of the map
             var startingPoint = undefined,
                 searchResult = undefined;
             if (location instanceof google.maps.LatLng) {

@@ -35,5 +35,3 @@ Then, build the javascript using [r.js](http://requirejs.org/docs/optimization.h
 
     $ cd bike_parking/static/js
     $ node ../../../bower_components/r.js/dist/r.js -o build.js 
-I recommend clearing your browser cache at this point.
-
