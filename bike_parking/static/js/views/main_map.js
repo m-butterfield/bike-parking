@@ -64,42 +64,22 @@ define([
                 url: '/nearby_parking',
                 data: data
             }).done(function(results) {
-                results = results.spots;
-                // if none were found, remove all from the map and collection
-                if (!results.length) {
-                    that.parkingResults.each(function(parkingResult) {
-                        parkingResult.get('marker').setMap(null);
-                    });
-                    that.parkingResults.reset();
-                    return;
+                var results = results.spots,
+                    result_ids = [];
+                for (var i in results) {
+                    result_ids.push(results[i].id)
                 }
-                // otherwise, just remove any markers not on the map anymore
+                // remove any markers not on the map anymore
                 var parkingResultsModels = that.parkingResults.models.slice();
                 parkingResultsModels.forEach(function(parkingResult) {
-                    var exists = false;
-                    for (var i = 0; i < results.length; i++) {
-                        if (results[i].lat === parkingResult.get('latitude') &&
-                            results[i].lng === parkingResult.get('longitude')) {
-                            exists = true;
-                            break;
-                        }
-                    }
-                    if (!exists) {
+                    if (result_ids.indexOf(parkingResult.get('id')) === -1) {
                         parkingResult.get('marker').setMap(null);
                         that.parkingResults.remove(parkingResult);
                     }
                 });
                 // make a new marker and add it to the map if it isn't there already
-                for (var i = 0; i < results.length; i++) {
-                    var exists = false;
-                    for (var j = 0; j < that.parkingResults.models.length; j++) {
-                        if (results[i].lat === that.parkingResults.models[j].latitude &&
-                            results[i].lng === that.parkingResults.models[j].longitude) {
-                            exists = true;
-                            break;
-                        }
-                    }
-                    if (!exists) {
+                for (var i in results) {
+                    if (!that.parkingResults.findWhere({id: results[i].id})) {
                         var location = new google.maps.LatLng(results[i].lat, results[i].lng);
                         location.name = results[i].name;
                         var marker = new google.maps.Marker({
@@ -114,6 +94,7 @@ define([
                             });
                         });
                         var parkingResult = new ParkingResult({
+                            id: results[i].id,
                             latitude: results[i].lat,
                             longitude: results[i].lng,
                             location: location,
